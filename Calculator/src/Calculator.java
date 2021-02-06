@@ -2,59 +2,66 @@ import java.util.*;
 
 public class Calculator {
 
-    String exp;
-    String postFix;
+    private String[] exp;
+    private int length;
+    private String[] postFix;
     private double currentTotal;
 
-    public Calculator(String _exp)
+    public Calculator(String[] _exp, int _length)
     {
         exp = _exp;
-        postFix = "";
+        length = _length;
+        postFix = new String[length];
         currentTotal = 0;
     }
 
     private void PostFix()
     {
-        Stack<Character> s = new Stack<Character>();
+        Stack<String> s = new Stack<String>();
 
         int i = 0;
-        int n = exp.length();
-        while (i < n)
+        int j = 0;
+        while (i < length)
         {
-            if (IsOperand(exp.charAt(i)))
-                postFix += exp.charAt(i++);
+            if (IsOperand(exp[i]))
+                postFix[j++] = exp[i++];
             else
             {
                 if (s.empty())
-                    s.push(exp.charAt(i++));
-                else if (PreOut(exp.charAt(i)) == 0 && PreIn(s.peek()) > PreOut(exp.charAt(i)))
-                    postFix += s.pop();
-                else if (PreOut(exp.charAt(i)) == PreIn(s.peek()))
+                    s.push(exp[i++]);
+                else if (PreOut(exp[i]) == 0 && PreIn(s.peek()) > PreOut(exp[i]))
+                    postFix[j++] = s.pop();
+                else if (PreOut(exp[i]) == PreIn(s.peek()))
                 {
                     s.pop();
+                    length = length - 2;
                     i++;
                 }
-                else if (PreOut(exp.charAt(i)) > PreIn(s.peek()))
-                    s.push(exp.charAt(i++));
+                else if (PreOut(exp[i]) > PreIn(s.peek()))
+                    s.push(exp[i++]);
                 else
-                    postFix += s.pop();
+                    postFix[j++] = s.pop();
             }
         }
 
         while (!s.empty())
-            postFix += s.pop();
+            postFix[j++] = s.pop();
     }
 
-    private boolean IsOperand(char x)
+    private boolean IsOperand(String s)
     {
+        char x = s.charAt(0);
         if (x == '+' || x == '-' || x == '*' || x == '/' || x == '^' || x == '(' || x == ')')
+        {
             return false;
+        }
         else 
             return true;
     }
 
-    private int PreOut(char x)
+    private int PreOut(String s)
     {
+        char x = s.charAt(0);
         if (x == '+' || x == '-')
             return 1;
         else if (x == '*' || x == '/')
@@ -69,8 +76,9 @@ public class Calculator {
             return -1;
     }
 
-    private int PreIn(char x)
+    private int PreIn(String s)
     {
+        char x = s.charAt(0);
         if (x == '+' || x == '-')
             return 2;
         else if (x == '*' || x == '/')
@@ -92,31 +100,30 @@ public class Calculator {
         int y;
 
         int i = 0;
-        int n = postFix.length();
-        while (i < n)
+        while (i < length)
         {
-            if (IsOperand(postFix.charAt(i)))
-                s.push(postFix.charAt(i++) - '0');
+            if (IsOperand(postFix[i]))
+                s.push(Integer.parseInt(postFix[i++]));
             else
             {
-                x = s.pop();
                 y = s.pop();
+                x = s.pop();
 
-                switch (postFix.charAt(i))
+                switch (postFix[i])
                 {
-                    case '+':
+                    case "+":
                         s.push(x + y);
                         break;
-                    case '-':
+                    case "-":
                         s.push(x - y);
                         break;
-                    case '*':
+                    case "*":
                         s.push(x * y);
                         break;
-                    case '/':
+                    case "/":
                         s.push(x / y);
                         break;
-                    case '^':
+                    case "^":
                         int result = 1;
                         for (int j = 0; j < y; ++j)
                         {
@@ -135,7 +142,7 @@ public class Calculator {
         return currentTotal;
     }
 
-    public void SetExpression(String _exp)
+    public void SetExpression(String[] _exp)
     {
         exp = _exp;
     }
@@ -143,6 +150,14 @@ public class Calculator {
     public void Reset()
     {
         currentTotal = 0;
+    }
+
+    public void PrintPostFix()
+    {
+        PostFix();
+        for (int i = 0; i < length; ++i)
+            System.out.println(postFix[i] + " ");
+        System.out.println();
     }
 
 }
