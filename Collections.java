@@ -41,6 +41,27 @@ public class Collections {
         set2.add(589);
         set2.add(255);
         System.out.println(set2);
+
+        System.out.println("\nHashMap");
+        HashMap<Integer, String> hm = new HashMap<Integer, String>();
+        hm.put(1, "Ash");
+        hm.put(2, "Craig");
+        hm.put(3, "Sara");
+        for (Map.Entry<Integer, String> m : hm.entrySet())
+        {
+            System.out.println(m.getKey() + " " + m.getValue());
+        }
+
+        System.out.println("\nHashTable");
+        Hashtable<Integer, String> ht = new Hashtable<Integer, String>();
+        ht.put(4, "Canada");
+        ht.put(5, "South Africa");
+        ht.put(6, "New Zealand");
+        for (Map.Entry<Integer, String> m : ht.entrySet())
+        {
+            System.out.println(m.getKey() + " " + m.getValue());
+        }
+
     }
     
 }
