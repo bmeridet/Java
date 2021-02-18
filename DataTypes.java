@@ -6,7 +6,7 @@ public class DataTypes {
     {
         try
         {
-            int x = Integer.parseInt(s);
+            Integer.parseInt(s);
             return true;
         }
         catch(NumberFormatException ex)
@@ -19,7 +19,7 @@ public class DataTypes {
     {
         try
         {
-            float x = Float.parseFloat(s);
+            Float.parseFloat(s);
             return true;
         }
         catch(NumberFormatException ex)
@@ -32,7 +32,7 @@ public class DataTypes {
     {
         try
         {
-            double x = Double.parseDouble(s);
+            Double.parseDouble(s);
             return true;
         }
         catch(NumberFormatException ex)
@@ -45,7 +45,7 @@ public class DataTypes {
     {
         try
         {
-            long x = Long.parseLong(s);
+            Long.parseLong(s);
             return true;
         }
         catch(NumberFormatException ex)
@@ -58,7 +58,7 @@ public class DataTypes {
     {
         try
         {
-            byte x = Byte.parseByte(s);
+            Byte.parseByte(s);
             return true;
         }
         catch(NumberFormatException ex)
@@ -71,7 +71,7 @@ public class DataTypes {
     {
         try
         {
-            short x = Short.parseShort(s);
+            Short.parseShort(s);
             return true;
         }
         catch(NumberFormatException ex)
@@ -105,7 +105,7 @@ public class DataTypes {
     {
         try
         {
-            boolean x = Boolean.parseBoolean(s);
+            Boolean.parseBoolean(s);
             return true;
         }
         catch(NumberFormatException ex)

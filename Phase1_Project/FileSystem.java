@@ -67,9 +67,12 @@ public class FileSystem {
         }
     }
 
-    public boolean FindFile(String fName)
+    public void FindFile(String fName)
     {
-        return fileList.contains(fName);
+        if (fileList.contains(fName))
+            System.out.println("Found " + fName + " at location " + dir);
+        else
+            System.out.println(fName + " not found.");
     }
 
     public String GetDir()
