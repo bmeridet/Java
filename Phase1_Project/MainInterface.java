@@ -9,18 +9,18 @@ public class MainInterface {
     public static void RunMain(FileSystem sys)
     {
         Menu.DisplayMain();
-        Integer input = scn.nextInt();
+        String input = scn.next();
 
-        while (input != 3)
+        while (!input.equals("3"))
         {
             switch(input)
             {
-                case 1:
+                case "1":
                 {
                     sys.PrintFileList();
                     break;
                 }
-                case 2:
+                case "2":
                 {
                     RunSub(sys);
                     break;
@@ -33,7 +33,7 @@ public class MainInterface {
             }
 
             Menu.DisplayMain();
-            input = scn.nextInt();
+            input = scn.next();
         }
 
         System.out.println("Exiting. Goodbye!");
@@ -43,14 +43,14 @@ public class MainInterface {
     private static void RunSub(FileSystem sys)
     {
         Menu.DisplaySub();
-        Integer input = scn.nextInt();
+        String input = scn.next();
         String fName;
 
-        while (input != 4)
+        while (!input.equals("4"))
         {
             switch (input)
             {
-                case 1:
+                case "1":
                 {
                     System.out.println("Enter file name for search: ");
                     fName = scn.next();
@@ -58,7 +58,7 @@ public class MainInterface {
 
                     break;
                 }
-                case 2:
+                case "2":
                 {
                     System.out.println("Enter file name to add: ");
                     fName = scn.next();
@@ -66,7 +66,7 @@ public class MainInterface {
 
                     break;
                 }
-                case 3:
+                case "3":
                 {
                     System.out.println("Enter file name to delete: ");
                     fName = scn.next();
@@ -74,7 +74,7 @@ public class MainInterface {
 
                     break;
                 }
-                case 4:
+                case "4":
                 {
                     System.out.println("Returning to main menu.");
                     break;
@@ -84,7 +84,7 @@ public class MainInterface {
             }
 
             Menu.DisplaySub();
-            input = scn.nextInt();
+            input = scn.next();
         }
 
     }
