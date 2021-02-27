@@ -8,7 +8,10 @@ public class FileMain {
 
     public static void main (String[] args)
     {
-        FileSystem sys = new FileSystem("C:/Users/benja/projects/java/Phase1_Project/Data");
+        System.out.println("Enter directory for data storage (use full path): ");
+        String dir = scn.next();
+
+        FileSystem sys = new FileSystem(dir);
 
         MainInterface.RunMain(sys);
 
