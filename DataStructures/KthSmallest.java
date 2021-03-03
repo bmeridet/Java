@@ -7,8 +7,29 @@ public class KthSmallest {
         int[] A = {3, 1, 2, 7, 5, 6, 9, 8};
         Print(A);
 
-        QuickSort(A, 0, A.length - 1);
+        int ans = NthSmallest(A, 0, A.length - 1, 4);
+        System.out.println("4th smallest is " + ans);
+
         Print(A);
+    }
+
+    private static int NthSmallest(int[] A, int L, int R, int n)
+    {
+        if (n > 0 && n < R - L + 1)
+        {
+            int M = Partition(A, L, R);
+
+            if (M - L == n - 1)
+                return A[M];
+
+            if (M - L > n - 1)
+                return NthSmallest(A, L, M - 1, n);
+            else
+                return NthSmallest(A, M + 1, R, n - M + 1 - 1);
+
+        }
+
+        return -1;
     }
 
     private static void QuickSort(int[] A, int L, int R)
