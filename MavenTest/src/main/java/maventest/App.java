@@ -50,6 +50,35 @@ public class App
 
         // test Delete - works
         //app.Delete(2);
+
+        // test FetchUpdat - works
+        app.FetchUpdate();
+    }
+
+    private void FetchUpdate()
+    {
+        qry = "select * from testtable";
+
+        try
+        {
+            PreparedStatement P = dbCon.prepareStatement(qry, ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_UPDATABLE);
+
+            ResultSet r = P.executeQuery();
+
+            while (r.next())
+            {
+                if (r.getInt("testID") == 1)
+                {
+                    r.updateString("testName", r.getString("testName") + " hello");
+                    r.updateRow();
+                    System.out.println("Record updated.");
+                }
+            }
+        }
+        catch(SQLException e)
+        {
+            System.out.println("Can't locate reference to prepared statemnet: " + e.getMessage());
+        }
     }
 
     private void GetRecord(int id)
