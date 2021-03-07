@@ -7,8 +7,8 @@ public class KthSmallest {
         int[] A = {3, 1, 2, 7, 5, 6, 9, 8};
         Print(A);
 
-        int ans = NthSmallest(A, 0, A.length - 1, 4);
-        System.out.println("4th smallest is " + ans);
+        int ans = NthSmallest(A, 0, A.length - 1, 7);
+        System.out.println("7th smallest is " + ans);
 
         Print(A);
     }
@@ -25,7 +25,7 @@ public class KthSmallest {
             if (M - L > n - 1)
                 return NthSmallest(A, L, M - 1, n);
             else
-                return NthSmallest(A, M + 1, R, n - M + 1 - 1);
+                return NthSmallest(A, M + 1, R, n - (M + 1) + L);
 
         }
 
