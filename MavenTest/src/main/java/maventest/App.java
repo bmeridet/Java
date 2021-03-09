@@ -1,12 +1,15 @@
 package maventest;
 
 import java.sql.*;
+import java.util.ArrayList;
+import java.util.Scanner;
 
 public class App 
 {
     String qry;
     Connection dbCon;
     Statement stmt;
+    ArrayList<student> students = new ArrayList<student>();
 
     App()
     {
@@ -38,26 +41,64 @@ public class App
     {
         App app = new App();
 
-        // test insert - works
-        //app.Insert("hello");
+        app.LoadData();
 
-        // test GetRecord - works
-        //app.GetRecord(1);
-        //app.GetRecord(2);
+        int choice = -1;
+        Scanner scn = new Scanner(System.in);
 
-        // test Update - works
-        //app.Update(2, "Hello World");
+        while (choice != 5)
+        {
+            switch (choice)
+            {
+                case 1:
+                {
+                    for (int i = 0; i < app.students.size(); ++i)
+                        app.students.get(i).Display();
+                    break;
+                }
+                case 2:
+                {
+                    System.out.println("Enter student name, and major: ");
+                    String name = scn.next();
+                    String major = scn.next();
+                    app.Insert(app, name, major); // update this function along with all of the others...
+                    break;
+                }
+                case 3:
+                {
+                    System.out.println("Enter student id, name, and major: ");
+                    int id = Integer.parseInt(scn.next());
+                    String name = scn.next();
+                    String major = scn.next();
+                    app.Update(app, id, name, major);
+                    break;
+                }
+                case 4:
+                {
+                    System.out.println("Enter student id to be deleted: ");
+                    int id = scn.nextInt();
+                    app.Delete(app, id);
+                    break;
+                }
+                default:
+                    break;
+            }
 
-        // test Delete - works
-        //app.Delete(2);
+            PrintMenu();
+            choice = scn.nextInt();
+        }
 
-        // test FetchUpdat - works
-        app.FetchUpdate();
+        scn.close();
     }
 
-    private void FetchUpdate()
+    private static void PrintMenu()
     {
-        qry = "select * from testtable";
+        System.out.println("\n1. List all records\n2.Add a record\n3.Update a record\n4. Delete a record.\n5. Exit");
+    }
+
+    private void LoadData()
+    {
+        qry = "select * from students";
 
         try
         {
@@ -67,12 +108,13 @@ public class App
 
             while (r.next())
             {
-                if (r.getInt("testID") == 1)
-                {
-                    r.updateString("testName", r.getString("testName") + " hello");
-                    r.updateRow();
-                    System.out.println("Record updated.");
-                }
+                // load data into list here
+                int id = r.getInt("studentID");
+                String name = r.getString("studentName");
+                String major = r.getString("studentMajor");
+                student s = new student(id, name, major);
+
+                students.add(s);
             }
         }
         catch(SQLException e)
@@ -83,7 +125,7 @@ public class App
 
     private void GetRecord(int id)
     {
-        qry = "select * from testtable where testID = ?";
+        qry = "select * from students where studentID = ?";
 
         try
         {
@@ -95,7 +137,7 @@ public class App
 
             while (r.next())
             {
-                System.out.println("testName = " + r.getString("testName"));
+                System.out.println("studentName = " + r.getString("studentName") + " Major: " + r.getString("studentMajor"));
             }
         }
         catch(SQLException e)
@@ -104,19 +146,22 @@ public class App
         }
     }
 
-    private void Insert(String name)
+    private void Insert(App app, String name, String major)
     {
-        qry = "insert into testtable(testName) values (?)";
+        qry = "insert into students(studentName, studentMajor) values (?, ?)";
 
         try
         {
             PreparedStatement P = dbCon.prepareStatement(qry);
 
             P.setString(1, name);
+            P.setString(2, major);
 
             if (P.executeUpdate() > 0)
                 System.out.println("Entry added to DB.");
 
+            app.students.clear();
+            app.LoadData();
         }
         catch(SQLException e)
         {
@@ -124,19 +169,23 @@ public class App
         }
     }
 
-    private void Update(int id, String name)
+    private void Update(App app,int id, String name, String major)
     {
-        qry = "update testtable set testName = ? where testID = ?";
+        qry = "update students set studentName = ?, studentMajor = ? where studentID = ?";
 
         try
         {
             PreparedStatement P = dbCon.prepareStatement(qry);
 
             P.setString(1, name);
-            P.setInt(2, id);
+            P.setString(2, major);
+            P.setInt(3, id);
 
             if (P.executeUpdate() > 0)
                 System.out.println("Record successfully updated.");
+
+            app.students.clear();
+            app.LoadData();
         }
         catch(SQLException e)
         {
@@ -144,9 +193,9 @@ public class App
         }
     }
 
-    private void Delete(int id)
+    private void Delete(App app, int id)
     {
-        qry = "delete from testtable where testID = ?";
+        qry = "delete from students where studentID = ?";
 
         try
         {
@@ -156,6 +205,9 @@ public class App
 
             if (P.executeUpdate() > 0)
                 System.out.println("Record successfully deleted.");
+
+            app.students.clear();
+            app.LoadData();
         }
         catch(SQLException e)
         {
